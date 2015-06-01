@@ -1,0 +1,68 @@
+XML 2 JSON
+https://lostechies.com/seanbiefeld/2011/10/21/simple-xml-to-json-with-php/
+
+xquery version "3.0";
+doc("/db/apps/demo/data/hamlet.xml")/PLAY/TITLE
+
+xquery version "3.0";
+collection("/db/osm")//node
+
+http://localhost:8080/exist/rest/db/test?_query=//candidate
+
+http://localhost:8080/exist/rest/db/test/candidate.xql
+
+http://localhost:8080/exist/rest/db/osm?_query=//node
+
+<Bars>
+{
+for $node in collection("/db/osm")/osm/node
+where $node/tag[@k="amenity"] and $node/tag[@v="bar"]
+return $node/tag[@v]
+}
+</Bars>
+
+<Bars>
+{
+for $tag in collection("/db/osm")/osm/node/tag
+where $tag[@k="amenity"] and $tag[@v="bar"]
+return $tag[@v]
+}
+</Bars>
+
+
+<Bars>
+{
+for $node in collection("/db/osm")/osm/node
+where $node/tag[@k="amenity"] and $node/tag[@v="$amenity"]
+return
+    <bar>
+        {$node}
+    </bar>
+}
+</Bars>
+
+<Bars>
+{
+for $node in collection("/db/osm")/osm/node
+where $node/tag[@k="amenity"] and $node/tag[@v="bar"] and $node/tag[@k="name"] and $node/tag[@v="Cuore"]
+return
+    <bar>
+        {$node[@lat]}
+    </bar>
+}
+</Bars>
+
+<Bars>
+{
+for $node in collection("/db/osm")/osm/node
+where $node/tag/@k="amenity" and $node/tag/@v="bar" and 
+	$node/@lat > 36.8388993 - 0.00000898 * 100 and
+	$node/@lat < 36.8388993 - -0.00000898 * 100 and
+	$node/@lon > -2.464748 - 0.00000898 * 100 and
+	$node/@lon < -2.464748 - -0.00000898 * 100
+return
+    <bar>
+        {$node}
+    </bar>
+}
+</Bars>
